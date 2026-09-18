@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Livro de Ponto</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand-mini">☰</div>
+      <nav id="nav">
+        <button class="nav active" data-view="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav" data-view="ponto">◷ <span>Ponto</span></button>
+        <button class="nav" data-view="funcionarios">♙ <span>Funcionários</span></button>
+        <button class="nav" data-view="registros">▤ <span>Registros</span></button>
+        <button class="nav" data-view="relatorios">◫ <span>Relatórios</span></button>
+        <button class="nav" data-view="extras">◷ <span>Horas Extras</span></button>
+        <button class="nav" data-view="banco">◷ <span>Banco de Horas</span></button>
+        <button class="nav" data-view="config">⚙ <span>Configurações</span></button>
+        <button class="nav" id="backupBtn">⇧ <span>Backup</span></button>
+      </nav>
+      <div class="admin-card"><div class="avatar small">👤</div><div><b>Administrador</b><small>Empresa Local</small><em>● Online</em></div></div>
+    </aside>
+
+    <main>
+      <header>
+        <div class="brand"><div class="logo">◷</div><div><h1>LIVRO DE PONTO</h1><p>Controle de Jornada de Trabalho</p></div></div>
+        <div class="today"><b id="todayDate"></b><span id="todayWeek"></span></div>
+      </header>
+
+      <section id="dashboard" class="view active">
+        <div class="cards stats">
+          <article class="stat cyan"><span>♙</span><div><p>Funcionários</p><strong id="statEmployees">0</strong><small>Cadastrados</small></div></article>
+          <article class="stat green"><span>✓</span><div><p>Presentes Hoje</p><strong id="statPresent">0</strong><small>Funcionários</small></div></article>
+          <article class="stat orange"><span>◷</span><div><p>Horas Trabalhadas</p><strong id="statHours">00:00</strong><small>Total hoje</small></div></article>
+          <article class="stat purple"><span>◔</span><div><p>Horas Extras</p><strong id="statExtra">00:00</strong><small>Total hoje</small></div></article>
+        </div>
+
+        <div class="grid2">
+          <article class="panel">
+            <div class="panel-title"><h2>PONTO DE HOJE</h2><span class="pill" id="workStatus">Aguardando</span></div>
+            <div class="person"><div class="avatar">👤</div><div><h3 id="activeName">Nenhum funcionário selecionado</h3><p id="activeMeta">Selecione um funcionário</p></div></div>
+            <div class="punches">
+              <button class="punch green" data-punch="entrada"><b id="timeEntrada">--:--</b><span>Entrada</span></button>
+              <button class="punch orange" data-punch="almoco_saida"><b id="timeAlmocoSaida">--:--</b><span>Saída Almoço</span></button>
+              <button class="punch blue" data-punch="almoco_retorno"><b id="timeAlmocoRetorno">--:--</b><span>Retorno Almoço</span></button>
+              <button class="punch red" data-punch="saida"><b id="timeSaida">--:--</b><span>Saída</span></button>
+            </div>
+            <div class="journey"><div><span>Trabalhadas</span><b id="journeyHours">00:00</b></div><div><span>Horas Extras</span><b id="journeyExtra">00:00</b></div><div><span>Total do Dia</span><b id="journeyTotal">00:00</b></div></div>
+            <button class="primary wide" id="finalizeBtn">FINALIZAR EXPEDIENTE</button>
+          </article>
+
+          <article class="panel">
+            <div class="panel-title"><h2>ÚLTIMOS REGISTROS</h2><button class="ghost" data-view-jump="registros">Ver todos</button></div>
+            <div id="latestRecords" class="record-list"></div>
+            <div class="monthly"><div class="panel-title"><h2>RESUMO DO MÊS</h2><span id="monthLabel"></span></div><div class="month-grid"><div><span>Dias Trabalhados</span><b id="monthDays">0</b></div><div><span>Horas Trabalhadas</span><b id="monthHours">00:00</b></div><div><span>Horas Extras</span><b id="monthExtra">00:00</b></div></div></div>
+          </article>
+        </div>
+
+        <article class="panel shortcuts"><h2>ATALHOS RÁPIDOS</h2><div class="shortcut-grid"><button data-view-jump="ponto">◷<span>Registrar Ponto</span></button><button data-view-jump="funcionarios">♙<span>Novo Funcionário</span></button><button data-view-jump="relatorios">▤<span>Relatório Diário</span></button><button data-view-jump="relatorios">▣<span>Relatório Mensal</span></button><button id="backupQuick">⇧<span>Backup</span></button><button data-view-jump="config">⚙<span>Configurações</span></button></div></article>
+      </section>
+
+      <section id="ponto" class="view"><article class="panel page"><h2>Registrar Ponto</h2><div class="form-row"><label>Funcionário<select id="punchEmployee"></select></label><label>Data<input type="date" id="punchDate"></label><label>Hora<input type="time" id="punchTime"></label></div><div class="action-grid"><button class="green big-action" data-manual-punch="entrada">ENTRADA</button><button class="orange big-action" data-manual-punch="almoco_saida">SAÍDA ALMOÇO</button><button class="blue big-action" data-manual-punch="almoco_retorno">RETORNO ALMOÇO</button><button class="red big-action" data-manual-punch="saida">SAÍDA</button><button class="gray big-action" data-manual-punch="extra">HORA EXTRA</button></div></article></section>
+
+      <section id="funcionarios" class="view"><article class="panel page"><div class="panel-title"><h2>Funcionários</h2><button class="primary" id="newEmployeeBtn">+ Novo Funcionário</button></div><div class="form-card" id="employeeForm"><input type="hidden" id="employeeId"><label>Nome<input id="employeeName" placeholder="Nome completo"></label><label>Código<input id="employeeCode" placeholder="001"></label><label>Cargo<input id="employeeRole" placeholder="Auxiliar Administrativo"></label><label>Jornada diária<input id="employeeHours" type="number" value="8" min="1" max="24" step="0.5"></label><button class="primary" id="saveEmployeeBtn">Salvar funcionário</button></div><div id="employeeList" class="table-wrap"></div></article></section>
+
+      <section id="registros" class="view"><article class="panel page"><div class="panel-title"><h2>Registros</h2><input id="recordSearch" class="search" placeholder="Buscar funcionário, data ou tipo"></div><div id="recordsTable" class="table-wrap"></div></article></section>
+
+      <section id="relatorios" class="view"><article class="panel page report"><div class="panel-title"><h2>Relatório Mensal</h2><input type="month" id="reportMonth"></div><div id="reportSummary" class="report-summary"></div><div class="report-buttons"><button class="purple-bg" id="pdfBtn">GERAR PDF</button><button class="green-bg" id="csvBtn">GERAR CSV / EXCEL</button></div><div id="reportTable" class="table-wrap"></div></article></section>
+
+      <section id="extras" class="view"><article class="panel page"><h2>Horas Extras</h2><div id="extraTable" class="table-wrap"></div></article></section>
+      <section id="banco" class="view"><article class="panel page"><h2>Banco de Horas</h2><div id="bankTable" class="table-wrap"></div></article></section>
+      <section id="config" class="view"><article class="panel page"><h2>Configurações</h2><div class="form-card"><label>Nome da empresa<input id="companyName"></label><label>Jornada padrão (horas)<input id="defaultHours" type="number" min="1" max="24" step="0.5"></label><button class="primary" id="saveConfig">Salvar configurações</button><button class="ghost" id="restoreBtn">Restaurar backup</button></div></article></section>
+    </main>
+  </div>
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
